@@ -34,16 +34,27 @@ try {
     hasChanges = true
   }
 
-  if (!hasChanges) {
+  if (hasChanges) {
+    const staged = git('diff', '--cached', '--name-only').split('\n').filter(Boolean).length
+    git('commit', '-m', await summary())
+    console.log(`Committed ${staged} changed file(s).`)
+  }
+
+  // A clean tree does not mean there is nothing to send: earlier commits may
+  // still be sitting unpushed, and those are what the live site is missing.
+  const branch = git('rev-parse', '--abbrev-ref', 'HEAD')
+  let unpushed = 1
+  try {
+    unpushed = Number(git('rev-list', '--count', '@{upstream}..HEAD'))
+  } catch {
+    unpushed = 1 // no upstream yet — push to create it
+  }
+
+  if (!hasChanges && unpushed === 0) {
     console.log('Nothing to publish — the site is already up to date.')
     process.exit(0)
   }
 
-  const staged = git('diff', '--cached', '--name-only').split('\n').filter(Boolean).length
-  git('commit', '-m', await summary())
-  console.log(`Committed ${staged} changed file(s).`)
-
-  const branch = git('rev-parse', '--abbrev-ref', 'HEAD')
   git('push', 'origin', branch)
   console.log(`Pushed to ${branch}. Cloudflare Pages will deploy in a moment.`)
 } catch (error) {
