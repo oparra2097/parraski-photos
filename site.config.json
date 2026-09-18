@@ -1,0 +1,24 @@
+{
+  "title": "Parraski",
+  "tagline": "Mountain & ski photography",
+  "author": "O. Parra",
+  "description": "Ski and mountain photography by O. Parra.",
+  "url": "https://parraski.com",
+  "email": "hello@parraski.com",
+  "about": [
+    "I photograph skiing and the mountains it happens in — mostly early mornings, mostly cold.",
+    "Prints and licensing available on request. Get in touch if you'd like to work together."
+  ],
+  "links": [
+    { "label": "Instagram", "url": "https://instagram.com/" }
+  ],
+  "sizes": [
+    { "name": "thumb", "width": 600 },
+    { "name": "medium", "width": 1200 },
+    { "name": "large", "width": 2400 }
+  ],
+  "formats": [
+    { "ext": "avif", "quality": 55 },
+    { "ext": "webp", "quality": 78 }
+  ]
+}

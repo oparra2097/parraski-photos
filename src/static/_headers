@@ -1,0 +1,19 @@
+# Cloudflare Pages response headers.
+# Anything in src/static/ is copied verbatim into public/ at build time.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: frame-ancestors 'none'
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), interest-cohort=()
+
+# Derivatives are rewritten only when a source photo changes, and a changed
+# photo normally gets a new name, so a week of caching is safe. Keep it short
+# enough that replacing a file in place still corrects itself.
+/photos/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/css/*
+  Cache-Control: public, max-age=3600
+/js/*
+  Cache-Control: public, max-age=3600

@@ -1,0 +1,11 @@
+node_modules/
+.cache/
+.DS_Store
+*.log
+
+# Full-resolution masters are NOT tracked in git. Keep them backed up
+# separately (external drive + cloud) — the committed derivatives in
+# public/photos/ are compressed web copies, not a backup of your originals.
+originals/*
+!originals/.gitkeep
+!originals/README.md
