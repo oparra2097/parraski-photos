@@ -15,7 +15,8 @@ npm run build               # process photos + generate the site into public/
 npm run serve               # preview at http://localhost:8080
 ```
 
-`npm run dev` does the last two in one go.
+`npm run dev` does the last two in one go, and `npm run publish` builds,
+commits and pushes in one command.
 
 ## Adding photos
 
@@ -67,6 +68,50 @@ and leave the rest.
 `alt` is the description screen readers announce. It falls back to the title,
 which is better than nothing but worth writing properly for your best work.
 
+## Publishing from Lightroom
+
+**Lightroom Classic only.** The cloud version (just "Lightroom") has
+Connections rather than Publish Services and cannot do this.
+
+No plugin needed — Lightroom Classic's built-in Hard Drive publish service
+writes straight into `originals/`, and its one-level folder structure is
+exactly how albums work here.
+
+**Set it up once:**
+
+1. Library module → **Publish Services** panel (bottom left) → **Hard Drive →
+   Set Up**.
+2. **Export Location** → set the folder to this repository's `originals/`.
+3. **File Settings**: JPEG, quality 90, colour space **sRGB**.
+4. **Image Sizing**: resize to long edge **2560 px**. The build never renders
+   above 2400 px, so anything larger is wasted disk and build time.
+5. **Metadata**: *Copyright & Contact Info Only*, and tick **Remove Location
+   Info**. The build strips metadata anyway, but stripping at the source too
+   means GPS never lands on your disk in the first place.
+6. **Output Sharpening**: Screen, Standard.
+7. Save, then right-click the service → **Create Published Collection** — one
+   per album. Each collection becomes its own subfolder in `originals/`, so a
+   collection named *Chamonix* becomes the Chamonix album.
+
+**Then, every time:**
+
+```
+drag photos into a published collection → Publish → npm run publish
+```
+
+`npm run publish` rebuilds, commits and pushes; Cloudflare Pages deploys on
+the push. Nothing else to click.
+
+Lightroom keeps the folder in sync on its own: edit a published photo and it
+moves to *Modified Photos to Republish*; remove one and it lands in *Deleted
+Photos to Remove* and disappears from the folder on the next publish. The
+build follows — changed files are re-encoded, removed ones have their
+derivatives pruned.
+
+Worth noting: with Lightroom in the loop, `originals/` is a **regenerable
+export**, not your masters. Your RAWs and catalogue are the real originals, so
+back those up — but losing `originals/` costs you one re-publish, nothing more.
+
 ## Site settings
 
 `site.config.json` holds everything you would otherwise hunt through HTML for:
@@ -107,7 +152,8 @@ plain text; GPS coordinates and serial numbers never reach the web copies.
 4. **Custom domains → Set up a domain** → `parraski.com`. If the domain is
    registered at Cloudflare the DNS records are created for you.
 
-Every `git push` redeploys. Cloudflare Pages' free tier has no bandwidth cap.
+Every `git push` redeploys — `npm run publish` does the build, commit and push
+in one command. Cloudflare Pages' free tier has no bandwidth cap.
 
 GitHub Pages also works (point it at `/public` on `main`), but its ~1 GB site
 limit and 100 GB/month soft bandwidth limit are worth knowing about for a

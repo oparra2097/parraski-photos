@@ -2,13 +2,14 @@
   "name": "parraski-photos",
   "version": "1.0.0",
   "private": true,
-  "description": "Photography portfolio for parraski.com — static site, built from originals/ into public/.",
+  "description": "Photography portfolio for parraski.com \u2014 static site, built from originals/ into public/.",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
     "rebuild": "node scripts/build.mjs --force",
     "serve": "node scripts/serve.mjs",
-    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "publish": "node scripts/build.mjs && node scripts/publish.mjs"
   },
   "dependencies": {
     "exif-reader": "^2.0.2",
