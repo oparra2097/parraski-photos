@@ -105,7 +105,6 @@ async function main() {
     JSON.stringify(
       {
         site: { title: config.title, url: config.url, author: config.author },
-        generated: new Date().toISOString(),
         albums: albums.map((album) => ({
           slug: album.slug,
           title: album.title,
